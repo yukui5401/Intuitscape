@@ -5,15 +5,17 @@ import './App.css'
 
 const Homepage = () => {
 
-  const [inputContent, changeInputContent] = useState("");
+  const [topic, changeInputContent] = useState("");
+
+  const [subtopics, changeSubtopics] = useState(["subtopic1", "subtopic2", "subtopic3"]);;
 
   const enteredPrompt = () => {
-    // axios.post("http://localhost:5173/create_subtopics}", {topic: inputContent})
-    //   .then((response) => {
-
-    //   })
-    //     .catch((error) => {console.error("Error: ", error)});
-    console.log(inputContent);
+    axios.post("http://localhost:5173/create_subtopics}", {topic: topic})
+      .then((response) => {
+        console.log(response.subtopics);
+        changeSubtopics(response.subtopics);
+      })
+        .catch((error) => {console.error("Error: ", error)});
   }
 
   return (
@@ -35,10 +37,9 @@ const Homepage = () => {
 
       <div className="inputContainer">
           <label>Enter Prompt: </label>
-          <input type='text' value={inputContent} onChange={(event) => changeInputContent(event.target.value)}/>
+          <input type='text' value={topic} onChange={(event) => changeInputContent(event.target.value)}/>
           <button className='enterPromptButton' onClick={enteredPrompt}>
-            {console.log(inputContent)}
-             <Link to={{ pathname: "/SubtopicPage"}} state={inputContent}>Enter</Link>
+             <Link to={{ pathname: "/SubtopicPage"}} state={{topic: topic, subtopics: subtopics}}>Enter</Link>
           </button>
       </div>
 

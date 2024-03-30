@@ -4,21 +4,31 @@ import { useLocation } from 'react-router-dom';
 const SubtopicPage = () => {
 
     const location = useLocation();
-    const { inputContent } = { inputContent: location.state } || { inputContent: '' };
+    const { inputContent } = { inputContent: location.state.topic } || { inputContent: '' };
+    const { subtopics } = { subtopics: location.state.subtopics } || { subtopics: [] };
 
-    useEffect(() => {
-        console.log("Component rendered");
-        console.log(location);
-    });
+    const [educationLevel, setEducationLevel] = useState('');
+    const [focus, setFocus] = useState('');
+    const [levelOfDetail, setLevelOfDetail] = useState('');
 
-    const [selectedItem, setSelectedItem] = useState('');
+    const handleEducationLevelChange = (e) => {
+        setEducationLevel(e.target.value);
+    };
 
-    const handleChange = (e) => {
-        setSelectedItem(e.target.value);
+    const handleFocusChange = (e) => {
+        setFocus(e.target.value);
+    };
+
+    const handleLevelOfDetailChange = (e) => {
+        setLevelOfDetail(e.target.value);
     };
 
     const enteredDropdown = () => {
-
+        axios.post("http://localhost:5173/create_presentation}", {topic: topic, educationLevel: educationLevel, focus: focus, levelOfDetail: levelOfDetail})
+            .then((response) => {
+                
+            })
+                .catch((error) => {console.error("Error: ", error)});
     }
 
     return (
@@ -28,25 +38,25 @@ const SubtopicPage = () => {
 
             <div>
                 
-                <select value={selectedItem} onChange={handleChange}>
-                <option value="">Select an item</option>
-                <option value="item1">Item 1</option>
-                <option value="item2">Item 2</option>
-                <option value="item3">Item 3</option>
+                <select value={educationLevel} onChange={handleEducationLevelChange}>
+                <option value="">Education level</option>
+                <option value="juniorLevel">Junior Level</option>
+                <option value="highSchoolLevel">High School Level</option>
+                <option value="undergradLevel">Undergrad Level</option>
                 </select>
 
-                <select value={selectedItem} onChange={handleChange}>
-                <option value="">Select an item</option>
-                <option value="item1">Item 1</option>
-                <option value="item2">Item 2</option>
-                <option value="item3">Item 3</option>
+                <select value={focus} onChange={handleFocusChange}>
+                <option value="">Focus</option>
+                {subtopics.map((subtopic, index) => {
+                    return <option key={index} value={subtopic}>{subtopic}</option>
+                })}
                 </select>
 
-                <select value={selectedItem} onChange={handleChange}>
-                <option value="">Select an item</option>
-                <option value="item1">Item 1</option>
-                <option value="item2">Item 2</option>
-                <option value="item3">Item 3</option>
+                <select value={levelOfDetail} onChange={handleLevelOfDetailChange}>
+                <option value="">Level of Detail</option>
+                <option value="lowDetail">Low</option>
+                <option value="mediumDetail">Medium</option>
+                <option value="highDetail">High</option>
                 </select>
 
             </div>
