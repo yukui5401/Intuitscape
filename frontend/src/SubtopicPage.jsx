@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const SubtopicPage = () => {
+
+    const location = useLocation();
+    const { inputContent } = { inputContent: location.state } || { inputContent: '' };
+
+    useEffect(() => {
+        console.log("Component rendered");
+        console.log(location);
+    });
 
     const [selectedItem, setSelectedItem] = useState('');
 
@@ -14,6 +23,9 @@ const SubtopicPage = () => {
 
     return (
         <>
+
+            <h1>Topic Selected: {inputContent}</h1>
+
             <div>
                 
                 <select value={selectedItem} onChange={handleChange}>
@@ -37,7 +49,7 @@ const SubtopicPage = () => {
                 <option value="item3">Item 3</option>
                 </select>
 
-        </div>
+            </div>
 
         <button className='enterDropdownButton' onClick={enteredDropdown}>Enter dropdown</button>
         </>
