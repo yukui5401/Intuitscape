@@ -16,15 +16,15 @@ system = "You are an intelligent assistant who is an expert at a broad range of 
 
 app = Flask(__name__)
 
-@app.route("/create_subtopics")
+@app.route("/create_subtopics", methods = ['POST'])
 def create_subtopics():
-  topic = request.args.get("topic")
+  request_data = request.get_json()
+  topic = request_data['topic']
 
-  human = "Create a list of 15 subtopics from the topic of {topic}. The name of the key should be 'subtopics' and the value should be a single list with 15 elements."
+  human = "Create a list of 15 subtopics from the topic of {topic}. The name of the key should be 'subtopics' and the value should be a single list with 15 elements"
   prompt = ChatPromptTemplate.from_messages([("system", system), ("human", human)])
 
   llm = ChatVertexAI(model_name="gemini-pro", convert_system_message_to_human=True)
-
 
   output_parser = StrOutputParser()
 
@@ -39,7 +39,9 @@ def create_subtopics():
   
   return json.loads(results)
 
-
+@app.route("/generate_topics")
+def generate_topics():
+   return "hello world"
 
 
 if __name__ == "__main__":
