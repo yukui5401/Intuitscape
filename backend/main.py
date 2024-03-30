@@ -12,7 +12,7 @@ load_dotenv()
 project="genai-genesis-418815"
 location = 'northamerica-northeast1'
 vertexai.init(project=project, location=location)
-system = "You are an intelligent assistant who is an expert at a broad range of topics. Your job is to help humans learn about new topics."
+system = "You are an expert at a broad range of topics. Your job is to help humans learn about new topics."
 
 app = Flask(__name__)
 
@@ -21,7 +21,7 @@ def create_subtopics():
   request_data = request.get_json()
   topic = request_data['topic']
 
-  human = "Create a list of 15 subtopics that someone interested in learning about {topic} should learn. You must respond through a json format. The name of the only key in the json object should be 'subtopics' and the value should be a single list with 15 elements. Do not include markdown formatting in your response."
+  human = "Create a list of 15 subtopics that someone interested in learning about {topic} should learn. These subtopics will be used as titles for slides on a slideshow, so keep them brief. Do not elaborate. You must respond through a json format. The name of the only key in the json object should be 'subtopics' and the value should be a single list with 15 elements. Do not include markdown formatting in your response."
   prompt = ChatPromptTemplate.from_messages([("system", system), ("human", human)])
 
   llm = ChatVertexAI(model_name="gemini-pro", convert_system_message_to_human=True)
@@ -51,8 +51,10 @@ def create_presentation():
   detail = request_data['detail']
   subtopics = request_data['subtopics']
 
+  generated_content = {"content": []}
+
   for subtopic in subtopics:
-    human = "Generate a paragraph explaining to someone at the {education} level in {detail} detail about {subtopic}. It is part of a presentation on {topic}. Respond in plain text. Do not include any markdown formatting."
+    human = "Generate a paragraph explaining to someone at the {education} level in {detail} detail about {subtopic}. It is part of a presentation on {topic}. Limit your response to 200 words. Respond in plain text. Do not include any markdown formatting. Do not include a title, simply generate an explanation."
     prompt = ChatPromptTemplate.from_messages([("system", system), ("human", human)])
 
     llm = ChatVertexAI(model_name="gemini-pro", convert_system_message_to_human=True)
@@ -64,16 +66,17 @@ def create_presentation():
     try:
       results = chain.invoke({"topic" : topic, "subtopic": subtopic, "detail" : detail, "education": education})
     except:
+      print("----------------------------------------------------------------------------------------------------------")
       print("--------------------------------------------RATE LIMIT REACHED--------------------------------------------")
-      print("--------------------------------------------RATE LIMIT REACHED--------------------------------------------")
-      print("--------------------------------------------RATE LIMIT REACHED--------------------------------------------")
+      print("----------------------------------------------------------------------------------------------------------")
 
+    generated_content["content"].append({"title" : subtopic, "explanation": results})
     print(subtopic)
     print(results)
 
 
   
-  return "<h1>Hello world</h1>"
+  return jsonify(generated_content)
 
 
 if __name__ == "__main__":
