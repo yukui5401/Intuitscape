@@ -9,7 +9,7 @@ import os
 
 load_dotenv()
 
-project="genai-genesis-418815"
+project = os.getenv("PROJECT_NAME")
 location = 'northamerica-northeast1'
 vertexai.init(project=project, location=location)
 system = "You are an expert at a broad range of topics. Your job is to help humans learn about new topics."
@@ -71,10 +71,6 @@ def create_presentation():
       print("----------------------------------------------------------------------------------------------------------")
 
     generated_content["content"].append({"title" : subtopic, "explanation": results})
-    print(subtopic)
-    print(results)
-
-
   
   return jsonify(generated_content)
 
