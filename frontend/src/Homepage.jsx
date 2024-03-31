@@ -84,6 +84,7 @@ const Homepage = () => {
           So, what are you waiting for?
         </p>
         <h2>Why we created intuitscape</h2>
+        <div className="cap-width">
         <p>
           As students, we constantly found ourselves scouring the internet for
           the right resources to sort out our confusion and stress. Each time,
@@ -93,6 +94,7 @@ const Homepage = () => {
           intuitscape comes in, providing the perfect closure to our knowledge
           quest.
         </p>
+        </div>
       </div>
     </>
   );

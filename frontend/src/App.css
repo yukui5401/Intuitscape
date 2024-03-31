@@ -25,6 +25,10 @@ h1 {
   width: fit-content;
 }
 
+.cap-width {
+  max-width: 70%;
+}
+
 .big-heading {
   font-size: 84px;
   padding-bottom: 0;
