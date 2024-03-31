@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SubtopicPage = () => {
   const location = useLocation();
-  const { topic: topic } = { topic: location.state.topic } || {topic: "",};
+  const { topic: topic } = { topic: location.state.topic } || { topic: "" };
 
   const [generatedTopic, setGeneratedTopic] = useState("");
   const { imagePath: imagePath } = { imagePath: location.state.imageUrl } || {
@@ -13,8 +13,7 @@ const SubtopicPage = () => {
   };
 
   const [subtopics, setSubtopics] = useState([]);
-
-  const [focus, setFocus] = useState("");
+  const [focus, setFocus] = useState([]);
 
   const [educationLevel, setEducationLevel] = useState("");
   const [levelOfDetail, setLevelOfDetail] = useState("");
@@ -39,20 +38,30 @@ const SubtopicPage = () => {
       .catch((error) => {
         console.error("Error: ", error);
       });
-  }, [topic]);
+  }, [topic, generatedTopic, imagePath]);
+
+  useEffect(() => {
+    console.log(focus);
+  });
 
   const handleEducationLevelChange = (e) => {
     setEducationLevel(e.target.value);
   };
 
-  const handleFocusChange = (e) => {
-    setFocus(e.target.value);
+  const handleCheckBoxChange = (event) => {
+    const { name, checked } = event.target;
+    if (checked) {
+      // If checkbox is checked, add its label to the state array
+      setFocus([...focus, event.target.name]);
+    } else {
+      // If checkbox is unchecked, remove its label from the state array
+      setFocus(focus.filter((item) => item !== name));
+    }
   };
 
   const handleLevelOfDetailChange = (e) => {
     setLevelOfDetail(e.target.value);
   };
-
 
   if (subtopics.length > 0) {
     return (
@@ -66,29 +75,23 @@ const SubtopicPage = () => {
             <option value="mediumDetail">Medium</option>
             <option value="highDetail">High</option>
           </select>
-          
+
           <select value={educationLevel} onChange={handleEducationLevelChange}>
             <option value="">Education level</option>
             <option value="juniorLevel">Junior Level</option>
             <option value="highSchoolLevel">High School Level</option>
             <option value="undergradLevel">Undergrad Level</option>
           </select>
-          
-          <select value={focus} onChange={handleFocusChange}>
-            <option value="">Focus</option>
-            {subtopics.map((subtopic, index) => {
-              return (
-                <option key={index} value={subtopic}>
-                  {subtopic}
-                </option>
-              );
-            })}
-          </select>
 
           {subtopics.map((subtopic, index) => (
             <div key={index}>
               <label>
-                <input type="checkbox" key={index} />
+                <input
+                  name={subtopic}
+                  type="checkbox"
+                  onChange={handleCheckBoxChange}
+                  checked={focus.includes(subtopic)}
+                />
                 {subtopic}
               </label>
             </div>
@@ -96,7 +99,17 @@ const SubtopicPage = () => {
         </div>
 
         <button className="enterDropdownButton">
-          <Link to={{ pathname: "/GraphPage"}} state={{topic: topic, educationLevel: educationLevel, focus: focus, levelOfDetail: levelOfDetail}}>Generate</Link>
+          <Link
+            to={{ pathname: "/GraphPage" }}
+            state={{
+              topic: topic,
+              educationLevel: educationLevel,
+              focus: focus,
+              levelOfDetail: levelOfDetail,
+            }}
+          >
+            Generate
+          </Link>
         </button>
       </>
     );

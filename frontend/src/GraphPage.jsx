@@ -78,6 +78,7 @@ const GraphPage = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+    const proOptions = { hideAttribution: true };
 
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
@@ -89,6 +90,7 @@ const GraphPage = () => {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
+            proOptions={proOptions}
             fitView
         >
             <Controls />
