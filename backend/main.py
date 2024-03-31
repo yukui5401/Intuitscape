@@ -11,6 +11,7 @@ from vertexai.generative_models import (
 import vertexai
 import json
 import os
+import time
 
 # imports for handling the images generation
 import requests
@@ -67,7 +68,7 @@ def create_presentation():
   detail = request_data['levelOfDetail']
   subtopics = request_data['focus']
 
-  generated_content = {"content": []}
+  generated_content = {"explanations": []}
 
   for subtopic in subtopics:
     human = "Generate a paragraph explaining to someone at the {education} level in {detail} detail about {subtopic}. It is part of a presentation on {topic}. Limit your response to 200 words. Respond in plain text. Do not include any markdown formatting. Do not include a title, simply generate an explanation."
@@ -79,19 +80,19 @@ def create_presentation():
     
     chain = prompt | llm | output_parser
     
-    try:
-      results = chain.invoke({"topic" : topic, "subtopic": subtopic, "detail" : detail, "education": education})
-    except:
-      print("----------------------------------------------------------------------------------------------------------")
-      print("--------------------------------------------RATE LIMIT REACHED--------------------------------------------")
-      print("----------------------------------------------------------------------------------------------------------")
+    while True:
+      try:
+        results = chain.invoke({"topic" : topic, "subtopic": subtopic, "detail" : detail, "education": education})
+        break
+      except:
+        print("----------------------------------------------------------------------------------------------------------")
+        print("--------------------------------------------RATE LIMIT REACHED--------------------------------------------")
+        print("----------------------------------------------------------------------------------------------------------")
+        time.sleep(3)
+        continue
 
-    generated_content["content"].append({"title" : subtopic, "explanation": results})
-    print(subtopic)
-    print(results)
+    generated_content["explanations"].append(results)
 
-
-  
   return jsonify(generated_content)
 
 
