@@ -44,18 +44,35 @@ const GraphPage = () => {
     let idCounter = 1;
 
     const initialNodes = [
-        { id: '1', position: { x: 0, y: 0 }, data: { label: topic } },
+        { id: '1', position: { x: 200, y: 0 }, data: { label: topic } },
         ...titles.map((title) => {
             idCounter++;
-            return { id: idCounter.toString(), position: { x: 150 * idCounter, y: 100 }, data: { label: title } };
+            return { id: idCounter.toString(), position: { x: -300 + 150 * idCounter, y: 300 }, data: { label: title } };
         }),
         ...explaination.map((explanation) => {
             idCounter++;
-            return { id: idCounter.toString(), position: { x: 150 * idCounter, y: 200 }, data: { label: explanation } };
+            return { id: idCounter.toString(), position: { x: -900 + 150 * idCounter, y: 500 }, data: { label: explanation } };
         })
     ];
 
-    const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+    const initialEdges = [
+        ...titles.map((title, index) => ({
+            id: `e1-e${index + 1}`,
+            source: '1',
+            target: (index + 2).toString(),
+        })),
+        ...explaination.map((explanation, index) => ({
+            id: `e${index + 1}-e${index + titles.length + 1}`,
+            source: (index + 1).toString(),
+            target: (index + titles.length + 1).toString(),
+        })),
+        {
+            id: `e${titles.length + 1}-e${titles.length + explaination.length + 1}`,
+            source: (titles.length + 1).toString(),
+            target: (titles.length + explaination.length + 1).toString(),
+        },
+    ];
+    
 
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
