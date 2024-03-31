@@ -64,26 +64,31 @@ const GraphPage = () => {
   const [titles, setTitles] = useState(location.state.focus);
   const [explaination, setExplanation] = useState([]);
   useEffect(() => {
-      axios
-         .post("http://127.0.0.1:5000/create_presentation", {
-              topic: topic,
-              educationLevel: educationLevel,
-              focus: titles,
-              levelOfDetail: levelOfDetail,
-          })
-         .then((response) => {
-            setExplanation(response.data.explanations);
-            console.log(response.data.explanations);
-            console.log(explaination);
-              // setTitles(response.content.title);
-              // setExplanation(response.content.explanation);
-          })
-         .catch((error) => {
-              console.error("Error: ", error);
-          });
-  }, []);
+    axios
+      .post("http://127.0.0.1:5000/create_presentation", {
+        topic: topic,
+        educationLevel: educationLevel,
+        focus: titles,
+        levelOfDetail: levelOfDetail,
+      })
+      .then((response) => {
+        setExplanation(response.data.explanations);
+
+        
+        // setTitles(response.content.title);
+        // setExplanation(response.content.explanation);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  }, [educationLevel, levelOfDetail, titles, topic]);
+
+  useEffect(() => { 
+    console.log(explaination);
+  });
+
   let idCounter = 1;
-  const initialNodes = [
+  let initialNodes = [
     { id: "1", position: { x: 0, y: 0 }, data: { label: topic } },
     ...titles.map((title) => {
       idCounter++;
@@ -147,30 +152,35 @@ const GraphPage = () => {
       setNodes([...layoutedNodes]);
       setEdges([...layoutedEdges]);
     },
-    [nodes, edges]
+    [nodes, edges, setEdges, setNodes]
   );
 
-  return (
-    <div style={{ width: "95.5vw", height: "90vh" }}>
-      {
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          proOptions={proOptions}
-          connectionLineType={ConnectionLineType.SmoothStep}
-          fitView
-        >
-          <Panel position="top-right">
-            <button onClick={() => onLayout("TB")}>vertical layout</button>
-            <button onClick={() => onLayout("LR")}>horizontal layout</button>
-          </Panel>
-        </ReactFlow>
-      }
-    </div>
-  );
+  if (explaination.length > 0) {
+    return (
+      <div style={{ width: "95.5vw", height: "90vh" }}>
+        {
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            proOptions={proOptions}
+            connectionLineType={ConnectionLineType.SmoothStep}
+            fitView
+          >
+            <Panel position="top-right">
+              <button onClick={() => onLayout("TB")}>vertical layout</button>
+              <button onClick={() => onLayout("LR")}>horizontal layout</button>
+            </Panel>
+          </ReactFlow>
+        }
+      </div>
+    );
+  }
+  else {
+    return (<h1>Loading...</h1>);
+  }
 };
 
 export default GraphPage;
