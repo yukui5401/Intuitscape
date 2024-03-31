@@ -1,5 +1,6 @@
 body {
-  font-size: 12pt;
+  font-size: 12t;
+  color: darkslategrey;
   font-family:Verdana, Geneva, Tahoma, sans-serif;
   margin: 20px 10px;
   /*background: radial-gradient(at top left,lightgrey,lightgreen);*/
@@ -9,18 +10,119 @@ body {
   background-attachment: fixed;
   background-position: center center;
   padding: 0px 20px 20px 20px;
-  border: 2px solid grey; 
-  border-radius: 15px 50px;
-  border-style: dotted double;
+  border: 4px solid grey; 
+  border-radius: 15px;
+  border-style: double;
+  border-top: 8px solid;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
 }
+
 
 img {
   display: block;
   margin: 0 auto;
+  /* margin-left: 75%;*/
+  transform: translate(-50%, 0);
   clip-path: circle(50%);
   width: 250px;
   height: 250px;
   opacity: 75%;
+}
+
+input[type=text] {
+  width: 20%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+a {
+  outline-color: transparent;
+}
+
+a:link {
+  color: #6900ff;
+}
+
+a:visited {
+  color: #a5c300;
+}
+
+a:focus {
+  text-decoration: none;
+  background: #bae498;
+}
+
+a:hover {
+  text-decoration: none;
+  background: #cdfeaa;
+}
+
+a:active {
+  background: #6900ff;
+  color: #cdfeaa;
+}
+/* CSS */
+.button-4 {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.button-4:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.button-4:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+.button-4:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+.button-4:focus {
+  outline: 1px transparent;
+}
+
+.button-4:before {
+  display: none;
+}
+
+.button-4:-webkit-details-marker {
+  display: none;
 }
 
 .shadow-effect {
@@ -50,7 +152,7 @@ img {
   white-space: nowrap;
   border-right: 2px solid;
   width: 0;
-  animation: typing 3s steps(90,end) forwards, blinking 1s infinite;
+  animation: typing 4s steps(90,end) forwards, blinking 1s infinite;
 }
 
 @keyframes typing {
