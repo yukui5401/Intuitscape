@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { Outlet, Link } from "react-router-dom";
 
 const SubtopicPage = () => {
   const location = useLocation();
@@ -59,7 +60,7 @@ const SubtopicPage = () => {
       });
   };
 
-  if (subtopics.length > 0) {
+//   if (subtopics.length > 0) {
     return (
       <>
         <h1>Topic Selected: {topic}</h1>
@@ -101,17 +102,17 @@ const SubtopicPage = () => {
         </div>
 
         <button className="enterDropdownButton" onClick={enteredDropdown}>
-          Generate
+          <Link to={{ pathname: "/GraphPage"}} state={{}}>Generate</Link>
         </button>
       </>
     );
-  }
+//   }
 
-  return (
-    <>
-      <h1>Loading...</h1>
-    </>
-  );
+//   return (
+//     <>
+//       <h1>Loading...</h1>
+//     </>
+//   );
 };
 
 export default SubtopicPage;

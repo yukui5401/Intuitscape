@@ -58,7 +58,7 @@ const Homepage = () => {
           <div className="button-4">
             <button className='enterPromptButton'>
               <Link to={{ pathname: "/SubtopicPage"}} state={{topic: topic, imageUrl: imagePath}}>Enter</Link>
-            </button>
+            </button>x
           </div>
       </div>
 
