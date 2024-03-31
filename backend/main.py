@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify 
+from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_vertexai import ChatVertexAI
@@ -15,6 +16,7 @@ vertexai.init(project=project, location=location)
 system = "You are an expert at a broad range of topics. Your job is to help humans learn about new topics."
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/create_subtopics", methods = ['POST'])
 def create_subtopics():
@@ -47,9 +49,9 @@ def create_subtopics():
 def create_presentation():
   request_data = request.get_json()
   topic = request_data['topic']
-  education = request_data['education_level']
-  detail = request_data['detail']
-  subtopics = request_data['subtopics']
+  education = request_data['educationLevel']
+  detail = request_data['levelOfDetail']
+  subtopics = request_data['focus']
 
   generated_content = {"content": []}
 

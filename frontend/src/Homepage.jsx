@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+import { useState } from 'react';
 import axios from 'axios';
 import { Outlet, Link } from "react-router-dom";
 import './App.css'
@@ -7,17 +8,7 @@ const Homepage = () => {
 
   const [topic, changeInputContent] = useState("");
 
-  const [subtopics, changeSubtopics] = useState(["subtopic1", "subtopic2", "subtopic3"]);;
-
-  const enteredPrompt = () => {
-    axios.post("http://localhost:5173/create_subtopics}", {topic: topic})
-      .then((response) => {
-        console.log(response.subtopics);
-        changeSubtopics(response.subtopics);
-      })
-        .catch((error) => {console.error("Error: ", error)});
-  }
-
+  
   return (
     <>
       <h1 className="typewriter">
@@ -39,7 +30,7 @@ const Homepage = () => {
         <br></br>
         Using intuitscape, you can explore learning in a conceptually linked landscape.
         <br></br>
-        By providing a topic and checking a few boxes, we'll be able to generate a personalized mindmap just for you.
+        By providing a topic and checking a few boxes, well be able to generate a personalized mindmap just for you.
         <br></br>
         <br></br>
         So, what are you waiting for?
@@ -50,8 +41,8 @@ const Homepage = () => {
           <label>Topic of interest: </label>
           <input type='text' value={topic} onChange={(event) => changeInputContent(event.target.value)}/>
           <div className="button-4">
-            <button className='enterPromptButton' onClick={enteredPrompt}>
-              <Link to={{ pathname: "/SubtopicPage"}} state={{topic: topic, subtopics: subtopics}}>Enter</Link>
+            <button className='enterPromptButton'>
+              <Link to={{ pathname: "/SubtopicPage"}} state={{topic: topic}}>Enter</Link>
             </button>
           </div>
       </div>

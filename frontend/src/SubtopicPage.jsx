@@ -1,69 +1,110 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const SubtopicPage = () => {
+  const location = useLocation();
+  const { inputContent } = { inputContent: location.state.topic } || {
+    inputContent: "",
+  };
+  const [subtopics, setSubtopics] = useState([]);
 
-    const location = useLocation();
-    const { inputContent } = { inputContent: location.state.topic } || { inputContent: '' };
-    const { subtopics } = { subtopics: location.state.subtopics } || { subtopics: [] };
+  const [educationLevel, setEducationLevel] = useState("");
+  const [levelOfDetail, setLevelOfDetail] = useState("");
 
-    const [educationLevel, setEducationLevel] = useState('');
-    const [focus, setFocus] = useState('');
-    const [levelOfDetail, setLevelOfDetail] = useState('');
+  useEffect(() => {
+    axios
+      .post("http://127.0.0.1:5000/create_subtopics", { topic: inputContent })
+      .then((response) => {
+        console.log(response.data.subtopics);
+        setSubtopics(response.data.subtopics);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  }, [inputContent]);
 
-    const handleEducationLevelChange = (e) => {
-        setEducationLevel(e.target.value);
-    };
+  const handleEducationLevelChange = (e) => {
+    setEducationLevel(e.target.value);
+  };
 
-    const handleFocusChange = (e) => {
-        setFocus(e.target.value);
-    };
+  //   const handleFocusChange = (e) => {
+  //     setFocus(e.target.value);
+  //   };
 
-    const handleLevelOfDetailChange = (e) => {
-        setLevelOfDetail(e.target.value);
-    };
+  const handleLevelOfDetailChange = (e) => {
+    setLevelOfDetail(e.target.value);
+  };
 
-    const enteredDropdown = () => {
-        axios.post("http://localhost:5173/create_presentation}", {topic: topic, educationLevel: educationLevel, focus: focus, levelOfDetail: levelOfDetail})
-            .then((response) => {
-                
-            })
-                .catch((error) => {console.error("Error: ", error)});
-    }
+  const enteredDropdown = () => {
+    axios
+      .post("http://localhost:5173/create_presentation}", {
+        topic: inputContent,
+        educationLevel: educationLevel,
+        focus: focus,
+        levelOfDetail: levelOfDetail,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  };
 
+  if (subtopics.length > 0) {
     return (
-        <>
+      <>
+        <h1>Topic Selected: {inputContent}</h1>
 
-            <h1>Topic Selected: {inputContent}</h1>
+        <div>
+          <select value={educationLevel} onChange={handleEducationLevelChange}>
+            <option value="">Education level</option>
+            <option value="juniorLevel">Junior Level</option>
+            <option value="highSchoolLevel">High School Level</option>
+            <option value="undergradLevel">Undergrad Level</option>
+          </select>
+          {/* 
+          <select value={focus} onChange={handleFocusChange}>
+            <option value="">Focus</option>
+            {subtopics.map((subtopic, index) => {
+              return (
+                <option key={index} value={subtopic}>
+                  {subtopic}
+                </option>
+              );
+            })}
+          </select> */}
 
-            <div>
-                
-                <select value={educationLevel} onChange={handleEducationLevelChange}>
-                <option value="">Education level</option>
-                <option value="juniorLevel">Junior Level</option>
-                <option value="highSchoolLevel">High School Level</option>
-                <option value="undergradLevel">Undergrad Level</option>
-                </select>
-
-                <select value={focus} onChange={handleFocusChange}>
-                <option value="">Focus</option>
-                {subtopics.map((subtopic, index) => {
-                    return <option key={index} value={subtopic}>{subtopic}</option>
-                })}
-                </select>
-
-                <select value={levelOfDetail} onChange={handleLevelOfDetailChange}>
-                <option value="">Level of Detail</option>
-                <option value="lowDetail">Low</option>
-                <option value="mediumDetail">Medium</option>
-                <option value="highDetail">High</option>
-                </select>
-
+          {subtopics.map((subtopic, index) => (
+            <div key={index}>
+              <label>
+                <input type="checkbox" key={index} />
+                {subtopic}
+              </label>
             </div>
+          ))}
 
-        <button className='enterDropdownButton' onClick={enteredDropdown}>Enter dropdown</button>
-        </>
+          <select value={levelOfDetail} onChange={handleLevelOfDetailChange}>
+            <option value="">Level of Detail</option>
+            <option value="lowDetail">Low</option>
+            <option value="mediumDetail">Medium</option>
+            <option value="highDetail">High</option>
+          </select>
+        </div>
+
+        <button className="enterDropdownButton" onClick={enteredDropdown}>
+          Generate
+        </button>
+      </>
     );
-}
+  }
+
+  return (
+    <>
+      <h1>Loading...</h1>
+    </>
+  );
+};
 
 export default SubtopicPage;
