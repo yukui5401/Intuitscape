@@ -1,5 +1,6 @@
+
 body {
-  font-size: 12t;
+  font-size: 12pt;
   color: darkslategrey;
   font-family:Verdana, Geneva, Tahoma, sans-serif;
   margin: 20px 10px;
@@ -17,8 +18,18 @@ body {
   border-bottom: 0px;
   border-left: 0px;
   border-right: 0px;
+  align-items: center;
 }
 
+h1 {
+  width: fit-content;
+}
+
+.big-heading {
+  font-size: 84px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
 
 .logo {
   display: block;
@@ -32,43 +43,59 @@ body {
 }
 
 input[type=text] {
-  width: 20%;
+  height: 12px;
   padding: 12px 20px;
-  box-sizing: border-box;
+  width: 70%;
   border: 2px solid #ccc;
   border-radius: 4px;
   background-color: #f8f8f8;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 20px;
+}
+
+input[type=text]:hover {
+  box-shadow: 0 5px 15px rgba(143, 182, 92, 0.4);
   cursor: pointer;
 }
 
 a {
-  outline-color: transparent;
-}
-
-a:link {
-  color: #6900ff;
-}
-
-a:visited {
-  color: #a5c300;
-}
-
-a:focus {
   text-decoration: none;
-  background: #bae498;
 }
 
-a:hover {
-  text-decoration: none;
-  background: #cdfeaa;
+button {
+  color: white;
+  background-color: rgb(64, 197, 64);
+  width: 200px;
+  height: 3em;
+  border-radius: 10px;
+  border: 0px;
+  transition: all 0.2s ease-in-out;
 }
 
-a:active {
-  background: #6900ff;
-  color: #cdfeaa;
+button:hover {
+  color: rgba(255, 255, 255, 1);
+  box-shadow: 0 5px 15px rgba(143, 182, 92, 0.4);
+  cursor: pointer;
 }
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  width: 600px;
+}
+
+.input-area {
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
 /* CSS */
-.button-4 {
+/* .button-4 {
   appearance: none;
   background-color: #FAFBFC;
   border: 1px solid rgba(27, 31, 35, 0.15);
@@ -123,9 +150,20 @@ a:active {
 
 .button-4:-webkit-details-marker {
   display: none;
+} */
+
+.top-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 
 .shadow-effect {
+  padding-top: 50vh;
   filter: drop-shadow(10px 20px 100px lightslategrey);
 }
 
@@ -145,12 +183,16 @@ a:active {
   color: lightslategray;
   display: inline-block;
   font-family: "Arial", sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 .typed {
   overflow: hidden;
   white-space: nowrap;
   border-right: 2px solid;
+  padding: 0;
+  margin: 0;
   width: 0;
   animation: typing 4s steps(90,end) forwards, blinking 1s infinite;
 }

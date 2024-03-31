@@ -8,27 +8,35 @@ const SubtopicPage = () => {
     topic: "",
   };
   const [generatedTopic, setGeneratedTopic] = useState("");
-  const { imagePath: imagePath } = { imagePath: location.state.imageUrl } || { imagePath: "" };
-  
+  const { imagePath: imagePath } = { imagePath: location.state.imageUrl } || {
+    imagePath: "",
+  };
+
   const [subtopics, setSubtopics] = useState([]);
 
   const [educationLevel, setEducationLevel] = useState("");
   const [levelOfDetail, setLevelOfDetail] = useState("");
 
   useEffect(() => {
-    if (imagePath !== "") { // if an imagePath exist, then use it to generate the topic first before POST to backend
-        axios
-            .post("http://127.0.0.1:5000/image2topic", {imagePath: imagePath })
-            .then((response) => {
-                setGeneratedTopic(response.generated_topic);
-            })
+    if (imagePath !== "") {
+      // if an imagePath exist, then use it to generate the topic first before POST to backend
+      axios
+        .post("http://127.0.0.1:5000/image2topic", { imagePath: imagePath })
+        .then((response) => {
+          setGeneratedTopic(response.generated_topic);
+        });
     }
-    axios.post("http://127.0.0.1:5000/create_subtopics",  {topic: (imagePath !== "") ? generatedTopic : topic})
-            .then((response) => {
-                console.log(response.data.subtopics);
-                setSubtopics(response.data.subtopics);
-            })
-            .catch((error) => {console.error("Error: ", error);});
+    axios
+      .post("http://127.0.0.1:5000/create_subtopics", {
+        topic: imagePath !== "" ? generatedTopic : topic,
+      })
+      .then((response) => {
+        console.log(response.data.subtopics);
+        setSubtopics(response.data.subtopics);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
   }, [topic]);
 
   const handleEducationLevelChange = (e) => {
@@ -65,6 +73,13 @@ const SubtopicPage = () => {
         <h1>Topic Selected: {topic}</h1>
 
         <div>
+          <select value={levelOfDetail} onChange={handleLevelOfDetailChange}>
+            <option value="">Level of Detail</option>
+            <option value="lowDetail">Low</option>
+            <option value="mediumDetail">Medium</option>
+            <option value="highDetail">High</option>
+          </select>
+          
           <select value={educationLevel} onChange={handleEducationLevelChange}>
             <option value="">Education level</option>
             <option value="juniorLevel">Junior Level</option>
@@ -91,13 +106,6 @@ const SubtopicPage = () => {
               </label>
             </div>
           ))}
-
-          <select value={levelOfDetail} onChange={handleLevelOfDetailChange}>
-            <option value="">Level of Detail</option>
-            <option value="lowDetail">Low</option>
-            <option value="mediumDetail">Medium</option>
-            <option value="highDetail">High</option>
-          </select>
         </div>
 
         <button className="enterDropdownButton" onClick={enteredDropdown}>
