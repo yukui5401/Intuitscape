@@ -3,6 +3,10 @@ from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_vertexai import ChatVertexAI
 from langchain_core.output_parsers import StrOutputParser
+from vertexai.generative_models import (
+    GenerativeModel,
+    Image,
+)
 import vertexai
 import json
 import os
@@ -15,6 +19,8 @@ vertexai.init(project=project, location=location)
 system = "You are an expert at a broad range of topics. Your job is to help humans learn about new topics."
 
 app = Flask(__name__)
+
+
 
 @app.route("/create_subtopics", methods = ['POST'])
 def create_subtopics():
@@ -42,6 +48,8 @@ def create_subtopics():
     results = results[7:-4]
   
   return json.loads(results)
+
+
 
 @app.route("/create_presentation", methods = ['POST'])
 def create_presentation():
@@ -73,10 +81,30 @@ def create_presentation():
     generated_content["content"].append({"title" : subtopic, "explanation": results})
     print(subtopic)
     print(results)
-
-
   
   return jsonify(generated_content)
+
+
+
+@app.route("/image2topic", methods = ['POST'])
+def image2topic():
+  request_data = request.get_json()
+  image_path = request_data['image']
+
+  image = Image.load_from_file({image_path})
+  
+  multimodal_model = GenerativeModel("gemini-1.0-pro-vision")
+
+  prompt = "You are a topic generator. Generate one single topic that is most relevant to what this image is about? In your responses, return only the topic, no need full sentences, Never add other words than the topic itself"
+  contents = [image, prompt]
+
+  responses = multimodal_model.generate_content(contents)
+
+  generated_topic = responses.candidates[0].content.parts[0].text
+  generated_topic = {"generated_topic" : generated_topic}
+
+  return jsonify(generated_topic)
+
 
 
 if __name__ == "__main__":
