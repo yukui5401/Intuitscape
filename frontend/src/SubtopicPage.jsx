@@ -17,21 +17,21 @@ const SubtopicPage = () => {
   const [educationLevel, setEducationLevel] = useState("");
   const [levelOfDetail, setLevelOfDetail] = useState("");
 
-//   useEffect(() => {
-//     if (imagePath !== "") { // if an imagePath exist, then use it to generate the topic first before POST to backend
-//         axios
-//             .post("http://127.0.0.1:5000/image2topic", {imagePath: imagePath })
-//             .then((response) => {
-//                 setGeneratedTopic(response.generated_topic);
-//             })
-//     }
-//     axios.post("http://127.0.0.1:5000/create_subtopics",  {topic: (imagePath !== "") ? generatedTopic : topic})
-//             .then((response) => {
-//                 console.log(response.data.subtopics);
-//                 setSubtopics(response.data.subtopics);
-//             })
-//             .catch((error) => {console.error("Error: ", error);});
-//   }, [topic]);
+  useEffect(() => {
+    if (imagePath !== "") { // if an imagePath exist, then use it to generate the topic first before POST to backend
+        axios
+            .post("http://127.0.0.1:5000/image2topic", {imagePath: imagePath })
+            .then((response) => {
+                setGeneratedTopic(response.generated_topic);
+            })
+    }
+    axios.post("http://127.0.0.1:5000/create_subtopics",  {topic: (imagePath !== "") ? generatedTopic : topic})
+            .then((response) => {
+                console.log(response.data.subtopics);
+                setSubtopics(response.data.subtopics);
+            })
+            .catch((error) => {console.error("Error: ", error);});
+  }, [topic]);
 
   const handleEducationLevelChange = (e) => {
     setEducationLevel(e.target.value);
@@ -46,7 +46,7 @@ const SubtopicPage = () => {
   };
 
 
-//   if (subtopics.length > 0) {
+  if (subtopics.length > 0) {
     return (
       <>
         <h1>Topic Selected: {topic}</h1>
@@ -58,7 +58,7 @@ const SubtopicPage = () => {
             <option value="highSchoolLevel">High School Level</option>
             <option value="undergradLevel">Undergrad Level</option>
           </select>
-          {/* 
+          
           <select value={focus} onChange={handleFocusChange}>
             <option value="">Focus</option>
             {subtopics.map((subtopic, index) => {
@@ -68,7 +68,7 @@ const SubtopicPage = () => {
                 </option>
               );
             })}
-          </select> */}
+          </select>
 
           {subtopics.map((subtopic, index) => (
             <div key={index}>
@@ -92,13 +92,13 @@ const SubtopicPage = () => {
         </button>
       </>
     );
-//   }
+  }
 
-//   return (
-//     <>
-//       <h1>Loading...</h1>
-//     </>
-//   );
+  return (
+    <>
+      <h1>Loading...</h1>
+    </>
+  );
 };
 
 export default SubtopicPage;
