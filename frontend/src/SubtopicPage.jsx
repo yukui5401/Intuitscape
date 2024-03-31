@@ -5,9 +5,8 @@ import { Outlet, Link } from "react-router-dom";
 
 const SubtopicPage = () => {
   const location = useLocation();
-  const { topic: topic } = { topic: location.state.topic } || {
-    topic: "",
-  };
+  const { topic: topic } = { topic: location.state.topic } || {topic: "",};
+
   const [generatedTopic, setGeneratedTopic] = useState("");
   const { imagePath: imagePath } = { imagePath: location.state.imageUrl } || { imagePath: "" };
   
@@ -16,21 +15,21 @@ const SubtopicPage = () => {
   const [educationLevel, setEducationLevel] = useState("");
   const [levelOfDetail, setLevelOfDetail] = useState("");
 
-  useEffect(() => {
-    if (imagePath !== "") { // if an imagePath exist, then use it to generate the topic first before POST to backend
-        axios
-            .post("http://127.0.0.1:5000/image2topic", {imagePath: imagePath })
-            .then((response) => {
-                setGeneratedTopic(response.generated_topic);
-            })
-    }
-    axios.post("http://127.0.0.1:5000/create_subtopics",  {topic: (imagePath !== "") ? generatedTopic : topic})
-            .then((response) => {
-                console.log(response.data.subtopics);
-                setSubtopics(response.data.subtopics);
-            })
-            .catch((error) => {console.error("Error: ", error);});
-  }, [topic]);
+//   useEffect(() => {
+//     if (imagePath !== "") { // if an imagePath exist, then use it to generate the topic first before POST to backend
+//         axios
+//             .post("http://127.0.0.1:5000/image2topic", {imagePath: imagePath })
+//             .then((response) => {
+//                 setGeneratedTopic(response.generated_topic);
+//             })
+//     }
+//     axios.post("http://127.0.0.1:5000/create_subtopics",  {topic: (imagePath !== "") ? generatedTopic : topic})
+//             .then((response) => {
+//                 console.log(response.data.subtopics);
+//                 setSubtopics(response.data.subtopics);
+//             })
+//             .catch((error) => {console.error("Error: ", error);});
+//   }, [topic]);
 
   const handleEducationLevelChange = (e) => {
     setEducationLevel(e.target.value);
@@ -44,21 +43,6 @@ const SubtopicPage = () => {
     setLevelOfDetail(e.target.value);
   };
 
-  const enteredDropdown = () => {
-    axios
-      .post("http://localhost:5173/create_presentation}", {
-        topic: topic,
-        educationLevel: educationLevel,
-        focus: focus,
-        levelOfDetail: levelOfDetail,
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-  };
 
 //   if (subtopics.length > 0) {
     return (
@@ -101,8 +85,8 @@ const SubtopicPage = () => {
           </select>
         </div>
 
-        <button className="enterDropdownButton" onClick={enteredDropdown}>
-          <Link to={{ pathname: "/GraphPage"}} state={{}}>Generate</Link>
+        <button className="enterDropdownButton">
+          <Link to={{ pathname: "/GraphPage"}} state={{topic: topic, educationLevel: educationLevel, focus: focus, levelOfDetail: levelOfDetail}}>Generate</Link>
         </button>
       </>
     );
