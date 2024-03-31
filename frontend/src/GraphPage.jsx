@@ -54,39 +54,9 @@ const getLayoutedElements = (nodes, edges, direction = "TB") => {
 const GraphPage = () => {
   const location = useLocation();
   const topic = location.state?.topic || "Placeholder Topic";
-  const { educationLevel } = {
-    educationLevel: location.state.educationLevel,
-  } || { educationLevel: "" };
-  const { levelOfDetail } = { levelOfDetail: location.state.levelOfDetail } || {
-    levelOfDetail: "",
-  };
-
-  const [titles, setTitles] = useState(location.state.focus);
-  const [explaination, setExplanation] = useState([]);
-  useEffect(() => {
-    axios
-      .post("http://127.0.0.1:5000/create_presentation", {
-        topic: topic,
-        educationLevel: educationLevel,
-        focus: titles,
-        levelOfDetail: levelOfDetail,
-      })
-      .then((response) => {
-        setExplanation(response.data.explanations);
-
-        
-        // setTitles(response.content.title);
-        // setExplanation(response.content.explanation);
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-  }, [educationLevel, levelOfDetail, titles, topic]);
-
-  useEffect(() => { 
-    console.log(explaination);
-  });
-
+  const explaination =  location.state?.explanations || ["test1"];
+  const titles = location.state?.focus || ["test2"];
+  
   let idCounter = 1;
   let initialNodes = [
     { id: "1", position: { x: 0, y: 0 }, data: { label: topic } },

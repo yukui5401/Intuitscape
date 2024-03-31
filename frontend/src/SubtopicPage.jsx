@@ -100,7 +100,7 @@ const SubtopicPage = () => {
 
         <button className="enterDropdownButton">
           <Link
-            to={{ pathname: "/GraphPage" }}
+            to={{ pathname: "/Loadingscreen" }}
             state={{
               topic: topic,
               educationLevel: educationLevel,
