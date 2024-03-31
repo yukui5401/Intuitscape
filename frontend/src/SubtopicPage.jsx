@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { Outlet, Link } from "react-router-dom";
 
 const SubtopicPage = () => {
   const location = useLocation();
-  const { topic: topic } = { topic: location.state.topic } || {
-    topic: "",
-  };
+  const { topic: topic } = { topic: location.state.topic } || {topic: "",};
+
   const [generatedTopic, setGeneratedTopic] = useState("");
   const { imagePath: imagePath } = { imagePath: location.state.imageUrl } || {
     imagePath: "",
   };
 
   const [subtopics, setSubtopics] = useState([]);
+
+  const [focus, setFocus] = useState("");
 
   const [educationLevel, setEducationLevel] = useState("");
   const [levelOfDetail, setLevelOfDetail] = useState("");
@@ -43,29 +45,14 @@ const SubtopicPage = () => {
     setEducationLevel(e.target.value);
   };
 
-  //   const handleFocusChange = (e) => {
-  //     setFocus(e.target.value);
-  //   };
+  const handleFocusChange = (e) => {
+    setFocus(e.target.value);
+  };
 
   const handleLevelOfDetailChange = (e) => {
     setLevelOfDetail(e.target.value);
   };
 
-  const enteredDropdown = () => {
-    axios
-      .post("http://localhost:5173/create_presentation}", {
-        topic: topic,
-        educationLevel: educationLevel,
-        focus: focus,
-        levelOfDetail: levelOfDetail,
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-  };
 
   if (subtopics.length > 0) {
     return (
@@ -86,7 +73,7 @@ const SubtopicPage = () => {
             <option value="highSchoolLevel">High School Level</option>
             <option value="undergradLevel">Undergrad Level</option>
           </select>
-          {/* 
+          
           <select value={focus} onChange={handleFocusChange}>
             <option value="">Focus</option>
             {subtopics.map((subtopic, index) => {
@@ -96,7 +83,7 @@ const SubtopicPage = () => {
                 </option>
               );
             })}
-          </select> */}
+          </select>
 
           {subtopics.map((subtopic, index) => (
             <div key={index}>
@@ -108,8 +95,8 @@ const SubtopicPage = () => {
           ))}
         </div>
 
-        <button className="enterDropdownButton" onClick={enteredDropdown}>
-          Generate
+        <button className="enterDropdownButton">
+          <Link to={{ pathname: "/GraphPage"}} state={{topic: topic, educationLevel: educationLevel, focus: focus, levelOfDetail: levelOfDetail}}>Generate</Link>
         </button>
       </>
     );

@@ -12,6 +12,12 @@ import vertexai
 import json
 import os
 
+# imports for handling the images generation
+import requests
+import base64
+from PIL import Image
+from io import BytesIO
+
 load_dotenv()
 
 project = os.getenv("PROJECT_NAME")
@@ -111,6 +117,43 @@ def image2topic():
 
 
 
+############ Function for generating image with Imagen2 (image generation tools of the gemini model) ############
+access_token = os.getenv("ACCESS_TOKEN")
+
+def generate_image(prompt, project_id):
+  url = f'https://us-central1-aiplatform.googleapis.com/v1/projects/{project_id}/locations/us-central1/publishers/google/models/imagegeneration:predict'
+  headers = {
+      'Authorization': f'Bearer {access_token}',
+      'Content-Type': 'application/json; charset=utf-8'
+  }
+  data = {
+      "instances": [
+          {
+          "prompt": prompt
+          }
+      ],
+      "parameters": {
+          "sampleCount": 1
+      }
+  }
+  
+  response = requests.post(url, headers=headers, json=data)
+
+  predictions = response.json()['predictions'][0]
+
+  img_data = base64.b64decode(predictions['bytesBase64Encoded'])
+
+  img = Image.open(BytesIO(img_data))
+
+  # Convert the image to a base64-encoded string
+  buffered = BytesIO()
+  img.save(buffered, format="PNG")
+  base64_encode_img = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+  return base64_encode_img  # return as a base64-encoded string
+
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=8000, debug=True)
 
