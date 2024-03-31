@@ -14,7 +14,7 @@ import 'reactflow/dist/style.css';
 const GraphPage = () => {
 
     const location = useLocation();
-    const { topic } = { topic: location.state.topic } || {topic: "",};
+    const topic = location.state?.topic || "Placeholder Topic";
     const { educationLevel } = { educationLevel: location.state.educationLevel } || { educationLevel: "" };
     const { focus } = { focus: location.state.focus } || { focus: "" };
     const { levelOfDetail } = { levelOfDetail: location.state.levelOfDetail } || { levelOfDetail: "" };
@@ -41,11 +41,19 @@ const GraphPage = () => {
     // }, []);
 
 
-    const initialNodes = titles.map((title, index) => {
-        console.log(index)
-        console.log(title);
-        return { id: index.toString(), position: { x: 300 * index, y: 100 }, data: { label: title } };
-    });
+    let idCounter = 1;
+
+    const initialNodes = [
+        { id: '1', position: { x: 0, y: 0 }, data: { label: topic } },
+        ...titles.map((title) => {
+            idCounter++;
+            return { id: idCounter.toString(), position: { x: 150 * idCounter, y: 100 }, data: { label: title } };
+        }),
+        ...explaination.map((explanation) => {
+            idCounter++;
+            return { id: idCounter.toString(), position: { x: 150 * idCounter, y: 200 }, data: { label: explanation } };
+        })
+    ];
 
     const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 

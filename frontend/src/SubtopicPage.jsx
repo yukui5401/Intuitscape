@@ -12,6 +12,8 @@ const SubtopicPage = () => {
   
   const [subtopics, setSubtopics] = useState([]);
 
+  const [focus, setFocus] = useState("");
+
   const [educationLevel, setEducationLevel] = useState("");
   const [levelOfDetail, setLevelOfDetail] = useState("");
 
@@ -35,9 +37,9 @@ const SubtopicPage = () => {
     setEducationLevel(e.target.value);
   };
 
-  //   const handleFocusChange = (e) => {
-  //     setFocus(e.target.value);
-  //   };
+  const handleFocusChange = (e) => {
+    setFocus(e.target.value);
+  };
 
   const handleLevelOfDetailChange = (e) => {
     setLevelOfDetail(e.target.value);
