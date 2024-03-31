@@ -20,7 +20,7 @@ body {
 }
 
 
-img {
+.logo {
   display: block;
   margin: 0 auto;
   /* margin-left: 75%;*/
@@ -164,4 +164,9 @@ a:active {
   0% { border-right-color: transparent }
   50% { border-right-color: lightslategrey }
   100% { border-right-color: transparent }
+}
+
+.inputImage {
+  width: 250px;
+  height: 250px;
 }

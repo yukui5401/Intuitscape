@@ -93,7 +93,7 @@ def create_presentation():
 @app.route("/image2topic", methods = ['POST'])
 def image2topic():
   request_data = request.get_json()
-  image_path = request_data['image']
+  image_path = request_data['imagePath']
 
   image = Image.load_from_file({image_path})
   

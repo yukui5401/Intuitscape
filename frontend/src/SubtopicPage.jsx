@@ -4,25 +4,32 @@ import axios from "axios";
 
 const SubtopicPage = () => {
   const location = useLocation();
-  const { inputContent } = { inputContent: location.state.topic } || {
-    inputContent: "",
+  const { topic: topic } = { topic: location.state.topic } || {
+    topic: "",
   };
+  const [generatedTopic, setGeneratedTopic] = useState("");
+  const { imagePath: imagePath } = { imagePath: location.state.imageUrl } || { imagePath: "" };
+  
   const [subtopics, setSubtopics] = useState([]);
 
   const [educationLevel, setEducationLevel] = useState("");
   const [levelOfDetail, setLevelOfDetail] = useState("");
 
   useEffect(() => {
-    axios
-      .post("http://127.0.0.1:5000/create_subtopics", { topic: inputContent })
-      .then((response) => {
-        console.log(response.data.subtopics);
-        setSubtopics(response.data.subtopics);
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-  }, [inputContent]);
+    if (imagePath !== "") { // if an imagePath exist, then use it to generate the topic first before POST to backend
+        axios
+            .post("http://127.0.0.1:5000/image2topic", {imagePath: imagePath })
+            .then((response) => {
+                setGeneratedTopic(response.generated_topic);
+            })
+    }
+    axios.post("http://127.0.0.1:5000/create_subtopics",  {topic: (imagePath !== "") ? generatedTopic : topic})
+            .then((response) => {
+                console.log(response.data.subtopics);
+                setSubtopics(response.data.subtopics);
+            })
+            .catch((error) => {console.error("Error: ", error);});
+  }, [topic]);
 
   const handleEducationLevelChange = (e) => {
     setEducationLevel(e.target.value);
@@ -39,7 +46,7 @@ const SubtopicPage = () => {
   const enteredDropdown = () => {
     axios
       .post("http://localhost:5173/create_presentation}", {
-        topic: inputContent,
+        topic: topic,
         educationLevel: educationLevel,
         focus: focus,
         levelOfDetail: levelOfDetail,
@@ -55,7 +62,7 @@ const SubtopicPage = () => {
   if (subtopics.length > 0) {
     return (
       <>
-        <h1>Topic Selected: {inputContent}</h1>
+        <h1>Topic Selected: {topic}</h1>
 
         <div>
           <select value={educationLevel} onChange={handleEducationLevelChange}>

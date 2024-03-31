@@ -6,8 +6,17 @@ import './App.css'
 
 const Homepage = () => {
 
-  const [topic, changeInputContent] = useState("");
+  const [topic, changeTopic] = useState("");
 
+  const [imagePath, setImageUrl] = useState('');
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImageUrl(imageUrl);
+    }
+  };
   
   return (
     <>
@@ -23,7 +32,7 @@ const Homepage = () => {
         </p>
       </h1>
       <div className="shadow-effect">
-        <img src="logo.png" alt="Logo" align="right"/>
+        <img src="logo.png" className="logo" alt="Logo" align="right"/>
         <h2>What is intuitscape?</h2>
         <p>
           We are an interactive platform designed to personalize learning content catered to <i>your needs</i>.
@@ -39,10 +48,16 @@ const Homepage = () => {
 
       <div className="inputContainer">
           <label>Topic of interest: </label>
-          <input type='text' value={topic} onChange={(event) => changeInputContent(event.target.value)}/>
+          <input type='text' value={topic} onChange={(event) => changeTopic(event.target.value)}/>
+
+          <div>
+            <input type="file" accept="image/*" onChange={handleImageUpload} />
+            {imagePath && <img src={imagePath} className="inputImage" alt="Uploaded" />}
+          </div>
+
           <div className="button-4">
             <button className='enterPromptButton'>
-              <Link to={{ pathname: "/SubtopicPage"}} state={{topic: topic}}>Enter</Link>
+              <Link to={{ pathname: "/SubtopicPage"}} state={{topic: topic, imageUrl: imagePath}}>Enter</Link>
             </button>
           </div>
       </div>
