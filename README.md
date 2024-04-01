@@ -24,4 +24,4 @@ Building intuitscape has been a valuable learning experience for our team, provi
 Looking ahead, our vision for intuitscape is to continue pushing the boundaries of innovation in e-learning by incorporating even more advanced AI capabilities. Our goal is to evolve intuitscape into a platform resembles Prezi but enhanced with AI by offering dynamic and interactive presentations that adapt to the user's preferences and learning objectives in real-time. With ongoing research and development, we're excited to bring this vision to life and empower learners worldwide to explore, discover, and learn in entirely new ways.
 
 ## Built with
-`python` `react` `flask` `vertexai` `gemini` `geminivision` `imagen 2` `javascript` `css` `react flow`
+`python` `react` `flask` 'node.js` `vertexai` `gemini` `gemini vision` `imagen` `javascript` `css` `react flow`
