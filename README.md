@@ -1,6 +1,9 @@
 # Intuitscape @ genaigenesis2024
 
 Features a personalized e-learning platform leveraging Google Generative AI. Check out the project at [devpost](https://devpost.com/software/prezi-but-with-ai).
+<img width='45%' src='https://github.com/user-attachments/assets/092582f8-85d5-4966-a7e7-4b6d08328a00'>&emsp;<img width='45%' src='https://github.com/user-attachments/assets/bd2dcc54-f574-408e-a340-9faec22c6c21'>
+
+
 
 ## Inspiration
 As students, we experienced firsthand the challenges of navigating the vast ocean of resources to find answers to our questions. However, each search often led to more confusion and frustration as we struggled to find reliable explanations tailored to our personal needs. It became evident that there was a pressing need for an intuitive and efficient solution to streamline the process of knowledge acquisition.
